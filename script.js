@@ -1,7 +1,7 @@
 
 function generateQRCodeClicked() {
     let programName = document.getElementById('name').value;
-    let source = document.getElementById('source').value.replace(/\n/g, "\r");
+    let source = document.getElementById('source').value.replace(/\n/g, "\r").toUpperCase();
     let dataForQRCode = generateDataForQRCode(programName, source);
     
     document.getElementById('result').value = dataForQRCode;
