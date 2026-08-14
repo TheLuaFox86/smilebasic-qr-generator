@@ -4,8 +4,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+		<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
     <script type="text/javascript" src="vendor/zlib.js/bin/deflate.min.js"></script>
+		<script type="text/javascript" src="vendor/zlib.js/bin/inflate.min.js"></script>
+		<!-- Replace your vendor encoding tag with this CDN link in index.html -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/encoding-japanese/2.0.0/encoding.min.js"></script>
+
     <script type="text/javascript" src="vendor/qrcode-generator/js/qrcode.js"></script>
     <script type="text/javascript" src="vendor/js-md5/build/md5.min.js"></script>
     <script type="text/javascript" src="vendor/encoding.js/encoding.min.js"></script>
@@ -14,13 +20,19 @@
 <body>
     <label for="name">Program Name:</label><input type="text" name="name" id="name" value="PROGRAM1" maxlength="8" />
     <br />
-    <textarea id="source" style="width: 512px; height: 256px;">INPUT "INPUT NUMBER TO QUIT";NUM</textarea>
+    <textarea id="source" maxlength="1024">INPUT "INPUT NUMBER TO QUIT";NUM</textarea>
     <br />
-    <input type="button" id="generate" value="Generate" onclick="generateQRCodeClicked()" /><br />
+    <input type="button" id="generate" value="Generate" onclick="generateQRCodeClicked()" /></br>
+	  <br />
+			<input type="file" id="file" accept="text/plain"><label>For Editing</label>
     <br />
+	  <br />
+	    <button onclick="downloadText()"> save raw</button>
+    <br />
+	  <label for="qr-f">Choose QR to edit</label><input name='qr-f' id="qr-file" type='file'>
     <div id="qr"></div>
     <br />
-    <textarea id="result" style="width: 512px; height: 256px; display: none;"></textarea>
+    <textarea id="result"></textarea>
     <script type="text/javascript" src="script.js"></script>
 </body>
 
