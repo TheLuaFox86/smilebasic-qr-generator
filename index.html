@@ -22,9 +22,19 @@
     <br />
     <textarea id="source" maxlength="1024">INPUT "INPUT NUMBER TO QUIT";NUM</textarea>
     <br />
-    <input type="button" id="generate" value="Generate" onclick="generateQRCodeClicked()" /></br>
+    <input type="button" id="generate" value="Generate" onclick="generateQRCodeClicked()" />
+	  <label for="r">Choose a Recource type:</label>
+			<select name="r" id="r">
+  		<option value="RPRG">.PRG</option>
+  		<option value="RMEM">.MEM</option>
+			<option value="RGRP">.GRP</option>
+			<option value="RCHR">.CHR</option>
+			<option value="RSCR">.SCR</option>
+			<option value="RCOL">.COL</option>
+			</select>
+
 	  <br />
-			<input type="file" id="file" accept="text/plain"><label>For Editing</label>
+			<input type="file" id="file"><label>For Editing</label>
     <br />
 	  <br />
 	    <button onclick="downloadText()"> save raw</button>

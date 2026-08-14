@@ -40,7 +40,7 @@ function generateDataForQRCode(programName, utfSource) {
     let petcSourceCompressed = bytesToString(petcSourceRawCompressed);
 
     let rprgSource = stringPaddedNull(programName, 8);
-    rprgSource += "RPRG";
+    rprgSource += document.getElementById('r').value;
     rprgSource += leBytesForNum(petcSourceCompressed.length);
     rprgSource += leBytesForNum(petcSource.length);
     rprgSource += petcSourceCompressed;
@@ -89,12 +89,13 @@ function decodeQRCodeData(qrData) {
     }
 
     // 4. Parse RPRG Header
-    // Header format: Name (8 bytes null-padded) + "RPRG" (4 bytes) + compressedLen (4 bytes) + rawLen (4 bytes)
+    // Header format: Name (8 bytes null-padded) + "R" (4 bytes) + compressedLen (4 bytes) + rawLen (4 bytes)
     let programName = rprgPayload.substring(0, 8).replace(/\0/g, ''); // Strip null padding
     let magicRprg = rprgPayload.substring(8, 12);
+	  console.log(magicRprg)
 
-    if (magicRprg !== "RPRG") {
-        throw new Error("Invalid format: Missing 'RPRG' magic header.");
+    if (magicRprg !== document.getElementById("r")) {
+        throw new Error("Invalid format: Missing Recsoure Type magic header.");
     }
 
     let compressedSize = numFromLeBytes(rprgPayload, 12);
@@ -172,7 +173,7 @@ function downloadText() {
   const textContent = document.getElementById("source").value;
   
   // 2. Create a Blob object with the text and specify the text/plain MIME type
-  const blob = new Blob([textContent], { type: "text/plain" });
+  const blob = new Blob(["binary/binary"], { type: "text/plain" });
   
   // 3. Create a temporary invisible anchor link
   const link = document.createElement("a");
@@ -242,11 +243,24 @@ function decodeQRCodeFromBytes(bytes) {
         if (rprgBytes[i] === 0) break;
         programName += String.fromCharCode(rprgBytes[i]);
     }
+	// 1. Define your string
+const inputString = document.getElementById("r").value;
+
+// 2. Initialize the encoder
+const encoder = new TextEncoder();
+
+// 3. Convert the string to bytes
+const byteArray = encoder.encode(inputString);
+
+// 4. View the result in the console
+console.log(byteArray); 
+	ba = byteArray
+// Output: Uint8Array(4) [ 82, 80, 82, 71 ]
 
     // 4. Verify "RPRG" Header (Bytes 8..11 -> [0x52, 0x50, 0x52, 0x47])
-    if (rprgBytes[8] !== 0x52 || rprgBytes[9] !== 0x50 || 
-        rprgBytes[10] !== 0x52 || rprgBytes[11] !== 0x47) {
-        throw new Error("Invalid format: Missing 'RPRG' section.");
+    if (rprgBytes[8] !== ba[0] || rprgBytes[9] !== ba[1] || 
+        rprgBytes[10] !== ba[2] || rprgBytes[11] !== ba[3]) {
+        throw new Error("Invalid format: Missing '" + document.getElementById("r").value + "' section.");
     }
 
     // 5. Read Compressed Size (Little Endian uint32 at offset 12)
